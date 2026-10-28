@@ -19,6 +19,9 @@ namespace Block_Breakout_Game
 
         Screen screen;
 
+        paddle Paddle;
+
+        Texture2D paddleTexture;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -30,7 +33,7 @@ namespace Block_Breakout_Game
         {
             // TODO: Add your initialization logic here
             screen = Screen.menu;
-
+            Paddle = new paddle(new Rectangle(400, 550, 100, 20), paddleTexture);
             base.Initialize();
         }
 
@@ -38,6 +41,7 @@ namespace Block_Breakout_Game
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            paddleTexture = Content.Load<Texture2D>("paddleTexture");
             // TODO: use this.Content to load your game content here
 
         }
