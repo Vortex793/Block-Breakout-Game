@@ -17,6 +17,7 @@ namespace Block_Breakout_Game
             win
         }
 
+        Rectangle window;
         Screen screen;
 
         paddle Paddle;
@@ -32,18 +33,22 @@ namespace Block_Breakout_Game
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            screen = Screen.menu;
-            Paddle = new paddle(new Rectangle(400, 550, 100, 20), paddleTexture);
+            screen = Screen.game;
+            window = new Rectangle(0, 0, 800, 600);
+            _graphics.PreferredBackBufferWidth = window.Width;
+            _graphics.PreferredBackBufferHeight = window.Height;
+            _graphics.ApplyChanges();
             base.Initialize();
+            
         }
 
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            paddleTexture = Content.Load<Texture2D>("paddleTexture");
+            paddleTexture = Content.Load<Texture2D>("paddle");
             // TODO: use this.Content to load your game content here
-
+            Paddle = new paddle(new Rectangle(600, 530, 120, 20), paddleTexture);
         }
 
         protected override void Update(GameTime gameTime)
@@ -61,6 +66,7 @@ namespace Block_Breakout_Game
             else if (screen == Screen.game)
             {
                 // Update game logic
+                Paddle.Update(gameTime);
             }
             else if (screen == Screen.gameover)
             {
@@ -78,7 +84,10 @@ namespace Block_Breakout_Game
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            _spriteBatch.Begin();
 
+            Paddle.Draw(_spriteBatch);
+            _spriteBatch.End();
             base.Draw(gameTime);
         }
     }
