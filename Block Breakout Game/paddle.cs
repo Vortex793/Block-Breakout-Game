@@ -14,6 +14,7 @@ namespace Block_Breakout_Game
 
 		private Vector2 _paddleSpeed;
 		public paddle(Rectangle paddleRect, Texture2D paddleTexture)
+
 		{
 			_paddleRect = paddleRect;
 			_paddleTexture = paddleTexture;

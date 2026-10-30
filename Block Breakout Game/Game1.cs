@@ -23,6 +23,9 @@ namespace Block_Breakout_Game
         paddle Paddle;
 
         Texture2D paddleTexture;
+
+        Texture2D ballTexture;
+        ball Ball;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -47,8 +50,10 @@ namespace Block_Breakout_Game
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             paddleTexture = Content.Load<Texture2D>("paddle");
+            ballTexture = Content.Load<Texture2D>("circle");
             // TODO: use this.Content to load your game content here
-            Paddle = new paddle(new Rectangle(600, 530, 120, 20), paddleTexture);
+            Paddle = new paddle(new Rectangle(350, 530, 120, 20), paddleTexture);
+            Ball = new ball(new Rectangle(390, 510, 20, 20), ballTexture, Paddle);
         }
 
         protected override void Update(GameTime gameTime)
@@ -67,6 +72,7 @@ namespace Block_Breakout_Game
             {
                 // Update game logic
                 Paddle.Update(gameTime);
+                Ball.Update(gameTime);
             }
             else if (screen == Screen.gameover)
             {
@@ -87,6 +93,7 @@ namespace Block_Breakout_Game
             _spriteBatch.Begin();
 
             Paddle.Draw(_spriteBatch);
+            Ball.Draw(_spriteBatch);
             _spriteBatch.End();
             base.Draw(gameTime);
         }
