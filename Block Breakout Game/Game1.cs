@@ -1,6 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
+using System.Reflection.Emit;
+using System.Runtime.InteropServices.JavaScript;
 
 namespace Block_Breakout_Game
 {
@@ -25,6 +28,11 @@ namespace Block_Breakout_Game
         Texture2D paddleTexture;
 
         Texture2D ballTexture;
+        
+        Texture2D blockTexture;
+
+        private List<block> blocks;
+
         ball Ball;
         public Game1()
         {
@@ -41,6 +49,9 @@ namespace Block_Breakout_Game
             _graphics.PreferredBackBufferWidth = window.Width;
             _graphics.PreferredBackBufferHeight = window.Height;
             _graphics.ApplyChanges();
+
+
+            blocks = new List<block>();
             base.Initialize();
             
         }
@@ -73,6 +84,19 @@ namespace Block_Breakout_Game
                 // Update game logic
                 Paddle.Update(gameTime);
                 Ball.Update(gameTime);
+
+
+                for (int i = 0; i < 20; i++)
+                {
+
+
+                   
+
+                    blocks.Add(new block(
+                        blockTexture,
+                        new Rectangle(x, y, size, size),
+                        speed));
+                }
             }
             else if (screen == Screen.gameover)
             {

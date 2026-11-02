@@ -29,5 +29,8 @@ namespace Block_Breakout_Game
             _Rect = rectangle;
             _isVisible = true;
         }
+
+
+
     }
 }
