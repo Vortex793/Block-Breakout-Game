@@ -30,7 +30,28 @@ namespace Block_Breakout_Game
             _isVisible = true;
         }
 
+        public Rectangle Rect
+        {
+            get { return _Rect; }
+        }
 
+        public bool IsVisible
+        {
+            get { return _isVisible; }
+            
+        }
 
+        public void Destroy()
+        {
+            _isVisible = false;
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            if (_isVisible)
+            {
+                spriteBatch.Draw(_Texture, _Rect, Color.White);
+            }
+        }
     }
 }

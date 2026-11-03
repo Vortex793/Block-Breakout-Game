@@ -24,7 +24,7 @@ namespace Block_Breakout_Game
         }
 
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, List<block> blocks)
         {
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
@@ -53,6 +53,23 @@ namespace Block_Breakout_Game
                 _ballRect.Y = Paddle.PaddleRect.Top - _ballRect.Height;
             }
 
+            for (int i = blocks.Count - 1; i >= 0; i--)
+            {
+                if (_ballRect.Intersects(blocks[i].Rect))
+                {
+                    // Destroy the brick
+                    blocks[i].Destroy();
+
+                    // Remove it from the list
+                    blocks.RemoveAt(i);
+
+                    // Bounce the ball vertically
+                    _ballSpeed.Y *= -1;
+
+                    // Only destroy one brick per update
+                    break;
+                }
+            }
             // Bottom of screen (optional: handle losing a life here)
             if (_ballRect.Bottom >= 600)
             {

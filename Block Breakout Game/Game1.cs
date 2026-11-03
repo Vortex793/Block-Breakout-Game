@@ -63,8 +63,12 @@ namespace Block_Breakout_Game
             paddleTexture = Content.Load<Texture2D>("paddle");
             ballTexture = Content.Load<Texture2D>("circle");
             // TODO: use this.Content to load your game content here
+
+            blockTexture = Content.Load<Texture2D>("rectangle");
             Paddle = new paddle(new Rectangle(350, 530, 120, 20), paddleTexture);
             Ball = new ball(new Rectangle(390, 510, 20, 20), ballTexture, Paddle);
+
+            CreateBlocks();
         }
 
         protected override void Update(GameTime gameTime)
@@ -83,7 +87,7 @@ namespace Block_Breakout_Game
             {
                 // Update game logic
                 Paddle.Update(gameTime);
-                Ball.Update(gameTime);
+                Ball.Update(gameTime, blocks);
 
 
                 for (int i = 0; i < 20; i++)
@@ -92,10 +96,10 @@ namespace Block_Breakout_Game
 
                    
 
-                    blocks.Add(new block(
-                        blockTexture,
-                        new Rectangle(x, y, size, size),
-                        speed));
+                    //blocks.Add(new block(
+                    //    blockTexture,
+                    //    new Rectangle(x, y, size, size),
+                    //    speed));
                 }
             }
             else if (screen == Screen.gameover)
@@ -108,7 +112,38 @@ namespace Block_Breakout_Game
             }
             base.Update(gameTime);
         }
+        private void CreateBlocks()
+        {
+            
+            int blockWidth = 70;
+            int blockHeight = 20;
+            int spacing = 8;
+            int rows = 4;
+            int columns = 10;
 
+            int startX = 14;
+            int startY = 50;
+            for (int row = 0; row < rows; row++)
+            {
+                Color[] colors =
+                {
+                    Color.Red,
+                    Color.Orange,
+                    Color.Yellow,
+                    Color.Green,
+                    Color.Blue
+                };
+                Color blockColor = colors[row];
+                for (int column = 0; column < columns; column++)
+                {
+                    int x = startX + column * (blockWidth + spacing);
+                    int y = startY + row * (blockHeight + spacing);
+
+                    Rectangle blockRect = new Rectangle(x, y, blockWidth, blockHeight);
+                    blocks.Add(new block(blockTexture, blockRect));
+                }
+            }
+        }
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
@@ -118,6 +153,11 @@ namespace Block_Breakout_Game
 
             Paddle.Draw(_spriteBatch);
             Ball.Draw(_spriteBatch);
+            foreach (block Block in blocks)
+            {
+                Block.Draw(_spriteBatch);
+            }
+
             _spriteBatch.End();
             base.Draw(gameTime);
         }
