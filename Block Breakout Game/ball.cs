@@ -13,14 +13,17 @@ namespace Block_Breakout_Game
         private Rectangle _ballRect;
         private Vector2 _ballSpeed;
 
-        paddle Paddle;   
+        paddle Paddle;
+
+        public bool IsLost { get; private set; }
         public ball(Rectangle ballRect, Texture2D ballTexture, paddle paddle)
 
         {
             _ballRect = ballRect;
             _ballTexture = ballTexture;
             Paddle = paddle;
-            _ballSpeed = new Vector2(200f, 200f); // Initial speed
+            IsLost = false;
+            _ballSpeed = new Vector2(300f, 300f); // Initial speed
         }
 
 
@@ -73,7 +76,7 @@ namespace Block_Breakout_Game
             // Bottom of screen (optional: handle losing a life here)
             if (_ballRect.Bottom >= 600)
             {
-                _ballSpeed.Y *= -1;
+                IsLost = true;
             }
         }
 

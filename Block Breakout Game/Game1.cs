@@ -34,6 +34,10 @@ namespace Block_Breakout_Game
         private List<block> blocks;
 
         ball Ball;
+
+        KeyboardState oldState;
+
+        SpriteFont gameFont, smallerGameFont;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -44,7 +48,7 @@ namespace Block_Breakout_Game
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            screen = Screen.game;
+            screen = Screen.menu;
             window = new Rectangle(0, 0, 800, 600);
             _graphics.PreferredBackBufferWidth = window.Width;
             _graphics.PreferredBackBufferHeight = window.Height;
@@ -63,7 +67,8 @@ namespace Block_Breakout_Game
             paddleTexture = Content.Load<Texture2D>("paddle");
             ballTexture = Content.Load<Texture2D>("circle");
             // TODO: use this.Content to load your game content here
-
+            gameFont = Content.Load<SpriteFont>("gameFont");
+            smallerGameFont = Content.Load<SpriteFont>("File");
             blockTexture = Content.Load<Texture2D>("rectangle");
             Paddle = new paddle(new Rectangle(350, 530, 120, 20), paddleTexture);
             Ball = new ball(new Rectangle(390, 510, 20, 20), ballTexture, Paddle);
@@ -76,11 +81,17 @@ namespace Block_Breakout_Game
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            KeyboardState keyboardState = Keyboard.GetState();
+
+            
             // TODO: Add your update logic here
             if (screen == Screen.menu)
             {
                 // Update menu logic
-
+                if (keyboardState.IsKeyDown(Keys.Enter))
+                {
+                    screen = Screen.game;
+                }
 
             }
             else if (screen == Screen.game)
@@ -88,8 +99,14 @@ namespace Block_Breakout_Game
                 // Update game logic
                 Paddle.Update(gameTime);
                 Ball.Update(gameTime, blocks);
-
-
+                if (blocks.Count == 0)
+                {
+                    screen = Screen.win;
+                }
+                if (Ball.IsLost)
+                {
+                    screen = Screen.gameover;
+                }
                 for (int i = 0; i < 20; i++)
                 {
 
@@ -105,12 +122,21 @@ namespace Block_Breakout_Game
             else if (screen == Screen.gameover)
             {
                 // Update game over logic
+                if (keyboardState.IsKeyDown(Keys.Enter) && oldState.IsKeyUp(Keys.Enter))
+                {
+                    ResetGame();
+                    screen = Screen.menu;
+                }
             }
             else if (screen == Screen.win)
             {
-                // Update win logic
+                if (keyboardState.IsKeyDown(Keys.Enter) && oldState.IsKeyUp(Keys.Enter))
+                {
+                    screen = Screen.menu;
+                }
             }
             base.Update(gameTime);
+            oldState = keyboardState;
         }
         private void CreateBlocks()
         {
@@ -144,20 +170,47 @@ namespace Block_Breakout_Game
                 }
             }
         }
+        private void ResetGame()
+        {
+            Paddle = new paddle(new Rectangle(350, 530, 120, 20), paddleTexture);
+            Ball = new ball(new Rectangle(390, 510, 20, 20), ballTexture, Paddle);
+            blocks.Clear();
+            CreateBlocks();
+        }
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
 
-            Paddle.Draw(_spriteBatch);
-            Ball.Draw(_spriteBatch);
-            foreach (block Block in blocks)
+            if (screen == Screen.menu)
             {
-                Block.Draw(_spriteBatch);
+                _spriteBatch.DrawString(gameFont, "Block Breakout Game", new Vector2(30, 100), Color.White);
+                _spriteBatch.DrawString(gameFont, "Block Breakout Game", new Vector2(40, 110), Color.Purple);
+                _spriteBatch.DrawString(smallerGameFont, "PRESS ENTER TO START", new Vector2(190, 500), Color.White);
             }
+            else if (screen == Screen.game)
+            {
+                Paddle.Draw(_spriteBatch);
+                Ball.Draw(_spriteBatch);
+                foreach (block Block in blocks)
+                {
+                    Block.Draw(_spriteBatch);
+                }
 
+            }
+            else if (screen == Screen.gameover)
+            {
+                string gameOverText = "Game Over";
+                Vector2 textSize = gameFont.MeasureString(gameOverText);
+                Vector2 textPosition = new Vector2((window.Width - textSize.X) / 2, (window.Height - textSize.Y) / 2);
+                _spriteBatch.DrawString(gameFont, gameOverText, textPosition, Color.White);
+            }
+            else if (screen == Screen.win)
+            {
+                _spriteBatch.DrawString(gameFont, "You Win!", new Vector2(300, 250), Color.White);
+            }
             _spriteBatch.End();
             base.Draw(gameTime);
         }

@@ -14,12 +14,7 @@
 #---------------------------------- Content ---------------------------------#
 
 #begin 8-bit-hud.ttf
-/importer:FontImporter
-/processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/processorParam:Version=3.8.5.1
-/build:8-bit-hud.ttf
+/copy:8-bit-hud.ttf
 
 #begin circle.png
 /importer:TextureImporter
@@ -33,6 +28,22 @@
 /processorParam:TextureFormat=Color
 /processorParam:Version=3.8.5.1
 /build:circle.png
+
+#begin File.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/processorParam:Version=3.8.5.1
+/build:File.spritefont
+
+#begin gameFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/processorParam:Version=3.8.5.1
+/build:gameFont.spritefont
 
 #begin paddle.png
 /importer:TextureImporter
