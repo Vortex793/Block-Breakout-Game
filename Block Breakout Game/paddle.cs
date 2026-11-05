@@ -29,7 +29,7 @@ namespace Block_Breakout_Game
 
 		public void Update(GameTime gameTime)
 		{
-            // Update paddle position based on user input
+            //Paddle position
             KeyboardState keyboardState = Keyboard.GetState();
             _paddleSpeed = Vector2.Zero;
 
@@ -43,7 +43,7 @@ namespace Block_Breakout_Game
                 _paddleSpeed.X = 1;
             }
 
-            float speed = 300f;
+            float speed = 600f;
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             _paddleRect.X += (int)(_paddleSpeed.X * speed * deltaTime);
@@ -53,8 +53,6 @@ namespace Block_Breakout_Game
 
 		public void Draw(SpriteBatch spriteBatch)
 		{
-			// Draw the paddle
-
             spriteBatch.Draw(_paddleTexture, _paddleRect, Color.White);
         }
 	}

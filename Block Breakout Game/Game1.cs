@@ -87,7 +87,6 @@ namespace Block_Breakout_Game
             // TODO: Add your update logic here
             if (screen == Screen.menu)
             {
-                // Update menu logic
                 if (keyboardState.IsKeyDown(Keys.Enter) && oldState.IsKeyUp(Keys.Enter))
                 {
                     ResetGame();
@@ -97,7 +96,6 @@ namespace Block_Breakout_Game
             }
             else if (screen == Screen.game)
             {
-                // Update game logic
                 Paddle.Update(gameTime);
                 Ball.Update(gameTime, blocks);
                 if (blocks.Count == 0)
@@ -122,7 +120,7 @@ namespace Block_Breakout_Game
             }
             else if (screen == Screen.gameover)
             {
-                // Update game over logic
+                
                 if (keyboardState.IsKeyDown(Keys.Enter) && oldState.IsKeyUp(Keys.Enter))
                 {
                     //ResetGame();
@@ -154,13 +152,23 @@ namespace Block_Breakout_Game
             {
                 Color[] colors =
                 {
-                    Color.Red,
-                    Color.Orange,
-                    Color.Yellow,
+
                     Color.Green,
                     Color.Blue,
-                    Color.Pink,
-                    Color.Purple
+                                        Color.Green,
+                    Color.Blue,
+                                        Color.Green,
+                    Color.Blue,
+                                        Color.Green,
+                    Color.Blue,
+                                        Color.Green,
+                    Color.Blue,
+                                        Color.Green,
+                    Color.Blue,
+                                        Color.Green,
+                    Color.Blue,
+                                        Color.Green,
+                    Color.Blue,
                 };
                 Color blockColor = colors[row];
                 for (int column = 0; column < columns; column++)
@@ -169,7 +177,7 @@ namespace Block_Breakout_Game
                     int y = startY + row * (blockHeight + spacing);
 
                     Rectangle blockRect = new Rectangle(x, y, blockWidth, blockHeight);
-                    blocks.Add(new block(blockTexture, blockRect));
+                    blocks.Add(new block(blockTexture, blockRect, blockColor));
                 }
             }
         }

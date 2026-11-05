@@ -23,11 +23,12 @@ namespace Block_Breakout_Game
 
 
 
-        public block(Texture2D texture, Rectangle rectangle)
+        public block(Texture2D texture, Rectangle rectangle, Color color)
         {
             _Texture = texture;
             _Rect = rectangle;
             _isVisible = true;
+            _Color = color;
         }
 
         public Rectangle Rect
@@ -50,7 +51,7 @@ namespace Block_Breakout_Game
         {
             if (_isVisible)
             {
-                spriteBatch.Draw(_Texture, _Rect, Color.White);
+                spriteBatch.Draw(_Texture, _Rect, _Color);
             }
         }
     }
