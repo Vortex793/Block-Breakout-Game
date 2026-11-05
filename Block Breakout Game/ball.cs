@@ -23,7 +23,7 @@ namespace Block_Breakout_Game
             _ballTexture = ballTexture;
             Paddle = paddle;
             IsLost = false;
-            _ballSpeed = new Vector2(300f, 300f); // Initial speed
+            _ballSpeed = new Vector2(500f, 500f); // Initial speed
         }
 
 

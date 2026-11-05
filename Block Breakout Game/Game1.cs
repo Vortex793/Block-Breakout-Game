@@ -88,8 +88,9 @@ namespace Block_Breakout_Game
             if (screen == Screen.menu)
             {
                 // Update menu logic
-                if (keyboardState.IsKeyDown(Keys.Enter))
+                if (keyboardState.IsKeyDown(Keys.Enter) && oldState.IsKeyUp(Keys.Enter))
                 {
+                    ResetGame();
                     screen = Screen.game;
                 }
 
@@ -124,7 +125,7 @@ namespace Block_Breakout_Game
                 // Update game over logic
                 if (keyboardState.IsKeyDown(Keys.Enter) && oldState.IsKeyUp(Keys.Enter))
                 {
-                    ResetGame();
+                    //ResetGame();
                     screen = Screen.menu;
                 }
             }
@@ -144,7 +145,7 @@ namespace Block_Breakout_Game
             int blockWidth = 70;
             int blockHeight = 20;
             int spacing = 8;
-            int rows = 4;
+            int rows = 7;
             int columns = 10;
 
             int startX = 14;
@@ -157,7 +158,9 @@ namespace Block_Breakout_Game
                     Color.Orange,
                     Color.Yellow,
                     Color.Green,
-                    Color.Blue
+                    Color.Blue,
+                    Color.Pink,
+                    Color.Purple
                 };
                 Color blockColor = colors[row];
                 for (int column = 0; column < columns; column++)

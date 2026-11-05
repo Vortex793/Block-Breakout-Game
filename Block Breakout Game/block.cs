@@ -12,7 +12,7 @@ namespace Block_Breakout_Game
         private Texture2D _Texture;
         private Rectangle _Rect;
         private bool _isVisible;
-
+        private Color _Color;
 
 
 
