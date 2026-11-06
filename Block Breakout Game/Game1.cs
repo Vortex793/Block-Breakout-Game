@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
@@ -38,6 +39,8 @@ namespace Block_Breakout_Game
         KeyboardState oldState;
 
         SpriteFont gameFont, smallerGameFont;
+
+        SoundEffect glassHit;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -48,7 +51,7 @@ namespace Block_Breakout_Game
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            screen = Screen.menu;
+            screen = Screen.win;
             window = new Rectangle(0, 0, 800, 600);
             _graphics.PreferredBackBufferWidth = window.Width;
             _graphics.PreferredBackBufferHeight = window.Height;
@@ -66,12 +69,13 @@ namespace Block_Breakout_Game
 
             paddleTexture = Content.Load<Texture2D>("paddle");
             ballTexture = Content.Load<Texture2D>("circle");
+            glassHit = Content.Load<SoundEffect>("glass");
             // TODO: use this.Content to load your game content here
             gameFont = Content.Load<SpriteFont>("gameFont");
             smallerGameFont = Content.Load<SpriteFont>("File");
             blockTexture = Content.Load<Texture2D>("rectangle");
             Paddle = new paddle(new Rectangle(350, 530, 120, 20), paddleTexture);
-            Ball = new ball(new Rectangle(390, 510, 20, 20), ballTexture, Paddle);
+            Ball = new ball(new Rectangle(390, 510, 20, 20), ballTexture, Paddle, glassHit);
 
             CreateBlocks();
         }
@@ -184,7 +188,7 @@ namespace Block_Breakout_Game
         private void ResetGame()
         {
             Paddle = new paddle(new Rectangle(350, 530, 120, 20), paddleTexture);
-            Ball = new ball(new Rectangle(390, 510, 20, 20), ballTexture, Paddle);
+            Ball = new ball(new Rectangle(390, 510, 20, 20), ballTexture, Paddle, glassHit);
             blocks.Clear();
             CreateBlocks();
         }
@@ -217,10 +221,13 @@ namespace Block_Breakout_Game
                 Vector2 textSize = gameFont.MeasureString(gameOverText);
                 Vector2 textPosition = new Vector2((window.Width - textSize.X) / 2, (window.Height - textSize.Y) / 2);
                 _spriteBatch.DrawString(gameFont, gameOverText, textPosition, Color.White);
+
+                _spriteBatch.DrawString(smallerGameFont, "PRESS ENTER TO TRY AGAIN", new Vector2(190, 500), Color.White);
             }
             else if (screen == Screen.win)
             {
-                _spriteBatch.DrawString(gameFont, "You Win!", new Vector2(300, 250), Color.White);
+                _spriteBatch.DrawString(gameFont, "You Win!", new Vector2(260, 250), Color.White);
+                _spriteBatch.DrawString(smallerGameFont, "PRESS ENTER TO PLAY AGAIN", new Vector2(160, 500), Color.White);
             }
             _spriteBatch.End();
             base.Draw(gameTime);

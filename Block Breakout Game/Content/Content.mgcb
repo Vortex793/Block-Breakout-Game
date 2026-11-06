@@ -45,6 +45,34 @@
 /processorParam:Version=3.8.5.1
 /build:gameFont.spritefont
 
+#begin glass.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/processorParam:Version=3.8.5.1
+/build:glass.mp3
+
+#begin glass1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/processorParam:Version=3.8.5.1
+/build:glass1.wav
+
+#begin glass2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/processorParam:Version=3.8.5.1
+/build:glass2.wav
+
+#begin glass3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/processorParam:Version=3.8.5.1
+/build:glass3.wav
+
 #begin paddle.png
 /importer:TextureImporter
 /processor:TextureProcessor

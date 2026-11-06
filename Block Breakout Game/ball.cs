@@ -12,18 +12,20 @@ namespace Block_Breakout_Game
         private Texture2D _ballTexture;
         private Rectangle _ballRect;
         private Vector2 _ballSpeed;
+        private SoundEffect _glassHit;
 
         paddle Paddle;
 
         public bool IsLost { get; private set; }
-        public ball(Rectangle ballRect, Texture2D ballTexture, paddle paddle)
+        public ball(Rectangle ballRect, Texture2D ballTexture, paddle paddle, SoundEffect glassHit)
 
         {
             _ballRect = ballRect;
             _ballTexture = ballTexture;
             Paddle = paddle;
             IsLost = false;
-            _ballSpeed = new Vector2(500f, 500f); // Initial speed
+            _ballSpeed = new Vector2(350f, 350f); // Initial speed
+            _glassHit = glassHit;
         }
 
 
@@ -65,10 +67,11 @@ namespace Block_Breakout_Game
 
                     // Remove it from the list
                     blocks.RemoveAt(i);
-
+                    _glassHit.Play();
                     // Bounce the ball vertically
                     _ballSpeed.Y *= -1;
 
+                    
                     // Only destroy one brick per update
                     break;
                 }
