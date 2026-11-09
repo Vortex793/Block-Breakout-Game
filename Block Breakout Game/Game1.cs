@@ -2,9 +2,13 @@
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
+using System;
 using System.Collections.Generic;
+
 using System.Reflection.Emit;
 using System.Runtime.InteropServices.JavaScript;
+
 
 namespace Block_Breakout_Game
 {
@@ -41,6 +45,12 @@ namespace Block_Breakout_Game
         SpriteFont gameFont, smallerGameFont;
 
         SoundEffect glassHit;
+
+        Song mainMusic, menuSong;
+
+        Video spaceBG;
+        VideoPlayer videoPlayer;
+        Texture2D bgTexture;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -56,7 +66,7 @@ namespace Block_Breakout_Game
             _graphics.PreferredBackBufferWidth = window.Width;
             _graphics.PreferredBackBufferHeight = window.Height;
             _graphics.ApplyChanges();
-
+         
 
             blocks = new List<block>();
             base.Initialize();
@@ -69,13 +79,20 @@ namespace Block_Breakout_Game
 
             paddleTexture = Content.Load<Texture2D>("paddle");
             ballTexture = Content.Load<Texture2D>("circle");
-            glassHit = Content.Load<SoundEffect>("glass");
+            glassHit = Content.Load<SoundEffect>("glass1");
             // TODO: use this.Content to load your game content here
             gameFont = Content.Load<SpriteFont>("gameFont");
             smallerGameFont = Content.Load<SpriteFont>("File");
             blockTexture = Content.Load<Texture2D>("rectangle");
+            mainMusic = Content.Load<Song>("main song");
+            menuSong = Content.Load<Song>("menu song");
             Paddle = new paddle(new Rectangle(350, 530, 120, 20), paddleTexture);
             Ball = new ball(new Rectangle(390, 510, 20, 20), ballTexture, Paddle, glassHit);
+            spaceBG = Content.Load<Video>("spaceBG");
+            videoPlayer = new VideoPlayer();
+            //videoPlayer.IsLooped = true;
+            MediaPlayer.Volume = 0.1f;
+            
 
             CreateBlocks();
         }
@@ -91,15 +108,29 @@ namespace Block_Breakout_Game
             // TODO: Add your update logic here
             if (screen == Screen.menu)
             {
+
+                if (MediaPlayer.State != MediaState.Playing)
+                {
+                    MediaPlayer.Stop();
+                    MediaPlayer.Play(menuSong);
+                }
+                    
                 if (keyboardState.IsKeyDown(Keys.Enter) && oldState.IsKeyUp(Keys.Enter))
                 {
                     ResetGame();
                     screen = Screen.game;
+                    videoPlayer.Play(spaceBG);
+                    MediaPlayer.Stop();
+                    TimeSpan startTime = TimeSpan.FromSeconds(9.50);
+                    MediaPlayer.Play(mainMusic, startTime);
+                    MediaPlayer.IsRepeating = true;
                 }
 
             }
             else if (screen == Screen.game)
             {
+
+
                 Paddle.Update(gameTime);
                 Ball.Update(gameTime, blocks);
                 if (blocks.Count == 0)
@@ -109,6 +140,7 @@ namespace Block_Breakout_Game
                 if (Ball.IsLost)
                 {
                     screen = Screen.gameover;
+                    MediaPlayer.Stop();
                 }
                 for (int i = 0; i < 20; i++)
                 {
@@ -128,6 +160,7 @@ namespace Block_Breakout_Game
                 if (keyboardState.IsKeyDown(Keys.Enter) && oldState.IsKeyUp(Keys.Enter))
                 {
                     //ResetGame();
+                    MediaPlayer.Stop();
                     screen = Screen.menu;
                 }
             }
@@ -207,6 +240,19 @@ namespace Block_Breakout_Game
             }
             else if (screen == Screen.game)
             {
+                // Extract the current frame frame as a Texture2D
+                if (videoPlayer.State != MediaState.Stopped)
+                {
+                    bgTexture = videoPlayer.GetTexture();
+                }
+
+                // Draw the texture to the screen like a regular sprite
+                if (bgTexture != null)
+                {
+                  
+                    _spriteBatch.Draw(bgTexture, GraphicsDevice.Viewport.Bounds, Color.White);
+       
+                }
                 Paddle.Draw(_spriteBatch);
                 Ball.Draw(_spriteBatch);
                 foreach (block Block in blocks)
