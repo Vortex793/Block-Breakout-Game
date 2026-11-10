@@ -61,7 +61,7 @@ namespace Block_Breakout_Game
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            screen = Screen.win;
+            screen = Screen.menu;
             window = new Rectangle(0, 0, 800, 600);
             _graphics.PreferredBackBufferWidth = window.Width;
             _graphics.PreferredBackBufferHeight = window.Height;
@@ -88,7 +88,7 @@ namespace Block_Breakout_Game
             menuSong = Content.Load<Song>("menu song");
             Paddle = new paddle(new Rectangle(350, 530, 120, 20), paddleTexture);
             Ball = new ball(new Rectangle(390, 510, 20, 20), ballTexture, Paddle, glassHit);
-            spaceBG = Content.Load<Video>("spaceBG");
+            spaceBG = Content.Load<Video>("spaceVid");
             videoPlayer = new VideoPlayer();
             //videoPlayer.IsLooped = true;
             MediaPlayer.Volume = 0.1f;
@@ -240,21 +240,53 @@ namespace Block_Breakout_Game
             }
             else if (screen == Screen.game)
             {
-                // Extract the current frame frame as a Texture2D
-                if (videoPlayer.State != MediaState.Stopped)
+                // Draw the video background
+                //if (videoPlayer.State == MediaState.Playing)
+                //{
+                //    try
+                //    {
+                //        bgTexture = videoPlayer.GetTexture();
+
+                //        if (bgTexture != null)
+                //        {
+                //            _spriteBatch.Draw(
+                //                bgTexture,
+                //                GraphicsDevice.Viewport.Bounds,
+                //                Color.White
+                //            );
+                //        }
+                //    }
+                //    catch (InvalidOperationException)
+                //    {
+                //        // No video frame is available yet.
+                //    }
+                //}
+
+                if (videoPlayer.State == MediaState.Playing)
                 {
-                    bgTexture = videoPlayer.GetTexture();
+                    try
+                    {
+                        bgTexture = videoPlayer.GetTexture();
+
+                        if (bgTexture != null)
+                        {
+                            _spriteBatch.Draw(
+                                bgTexture,
+                                new Rectangle(0, 0, window.Width, window.Height),
+                                Color.White
+                            );
+                        }
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        // Video frame not available yet
+                    }
                 }
 
-                // Draw the texture to the screen like a regular sprite
-                if (bgTexture != null)
-                {
-                  
-                    _spriteBatch.Draw(bgTexture, GraphicsDevice.Viewport.Bounds, Color.White);
-       
-                }
+                // Draw game objects over the background
                 Paddle.Draw(_spriteBatch);
                 Ball.Draw(_spriteBatch);
+
                 foreach (block Block in blocks)
                 {
                     Block.Draw(_spriteBatch);
