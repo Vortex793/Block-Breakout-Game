@@ -35,8 +35,10 @@ namespace Block_Breakout_Game
         KeyboardState oldState;
         SpriteFont gameFont, smallerGameFont;
 
-        SoundEffect glassHit;
-        Song mainMusic, menuSong;
+        List<SoundEffect> glassSounds;
+        Random random = new Random();
+
+        Song mainMusic, menuSong, deathMusic;
 
         Video spaceBG;
         VideoPlayer videoPlayer;
@@ -68,15 +70,25 @@ namespace Block_Breakout_Game
 
             paddleTexture = Content.Load<Texture2D>("paddle");
             ballTexture = Content.Load<Texture2D>("circle");
-            glassHit = Content.Load<SoundEffect>("glass1");
+
+            glassSounds = new List<SoundEffect>
+            {
+                Content.Load<SoundEffect>("glass1"),
+                Content.Load<SoundEffect>("glass2"),
+                Content.Load<SoundEffect>("glass3")
+            };
+
             gameFont = Content.Load<SpriteFont>("gameFont");
             smallerGameFont = Content.Load<SpriteFont>("File");
             blockTexture = Content.Load<Texture2D>("rectangle");
+
+            //Tunes
             mainMusic = Content.Load<Song>("main song");
             menuSong = Content.Load<Song>("menu song");
+            deathMusic = Content.Load<Song>("MissingDemo");
 
             Paddle = new paddle(new Rectangle(350, 530, 120, 20), paddleTexture);
-            Ball = new ball(new Rectangle(390, 510, 20, 20), ballTexture, Paddle, glassHit);
+            Ball = new ball(new Rectangle(390, 510, 20, 20), ballTexture, Paddle, glassSounds, random);
 
             spaceBG = Content.Load<Video>("spaceVid");
             videoPlayer = new VideoPlayer();
@@ -151,11 +163,21 @@ namespace Block_Breakout_Game
             }
             else if (screen == Screen.gameover)
             {
+
+
+                if (MediaPlayer.State != MediaState.Playing)
+                {
+                    MediaPlayer.Stop();
+                    MediaPlayer.Play(deathMusic);
+                }
+
                 if (keyboardState.IsKeyDown(Keys.Enter) && oldState.IsKeyUp(Keys.Enter))
                 {
                     MediaPlayer.Stop();
                     screen = Screen.menu;
                 }
+
+                
             }
             else if (screen == Screen.win)
             {
@@ -208,8 +230,8 @@ namespace Block_Breakout_Game
         private void ResetGame()
         {
             Paddle = new paddle(new Rectangle(350, 530, 120, 20), paddleTexture);
-            Ball = new ball(new Rectangle(390, 510, 20, 20), ballTexture, Paddle, glassHit);
-            blocks.Clear();
+            Ball = new ball(new Rectangle(390, 510, 20, 20), ballTexture, Paddle, glassSounds, random);
+            blocks.Clear(); 
             CreateBlocks();
 
             lastVideoPosition = TimeSpan.Zero;

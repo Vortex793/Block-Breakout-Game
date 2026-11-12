@@ -87,6 +87,13 @@
 /processorParam:Version=3.8.5.1
 /build:menu song.mp3
 
+#begin MissingDemo.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/processorParam:Version=3.8.5.1
+/build:MissingDemo.mp3
+
 #begin paddle.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -112,12 +119,6 @@
 /processorParam:TextureFormat=Color
 /processorParam:Version=3.8.5.1
 /build:rectangle.png
-
-#begin spaceVid.mp4
-/importer:H264Importer
-/processor:VideoProcessor
-/processorParam:Version=3.8.5.1
-/build:spaceVid.mp4
 
 #begin spaceVid.mp4
 /importer:H264Importer

@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,22 +13,31 @@ namespace Block_Breakout_Game
         private Texture2D _ballTexture;
         private Rectangle _ballRect;
         private Vector2 _ballSpeed;
-        private SoundEffect _glassHit;
+
+        private List<SoundEffect> _glassSounds;
+        private Random _random;
 
         paddle Paddle;
 
         public bool IsLost { get; private set; }
-        public ball(Rectangle ballRect, Texture2D ballTexture, paddle paddle, SoundEffect glassHit)
 
+        public ball(
+            Rectangle ballRect,
+            Texture2D ballTexture,
+            paddle paddle,
+            List<SoundEffect> glassSounds,
+            Random random)
         {
             _ballRect = ballRect;
             _ballTexture = ballTexture;
             Paddle = paddle;
-            IsLost = false;
-            _ballSpeed = new Vector2(350f, 350f); // Initial speed
-            _glassHit = glassHit;
-        }
 
+            IsLost = false;
+            _ballSpeed = new Vector2(350f, 350f);
+
+            _glassSounds = glassSounds;
+            _random = random;
+        }
 
         public void Update(GameTime gameTime, List<block> blocks)
         {
@@ -58,25 +68,30 @@ namespace Block_Breakout_Game
                 _ballRect.Y = Paddle.PaddleRect.Top - _ballRect.Height;
             }
 
+            // Block collision
             for (int i = blocks.Count - 1; i >= 0; i--)
             {
                 if (_ballRect.Intersects(blocks[i].Rect))
                 {
-                    // Destroy the brick
+                    // Destroy the block
                     blocks[i].Destroy();
 
                     // Remove it from the list
                     blocks.RemoveAt(i);
-                    _glassHit.Play();
+
+                    // Play a random glass sound
+                    int soundIndex = _random.Next(_glassSounds.Count);
+                    _glassSounds[soundIndex].Play();
+
                     // Bounce the ball vertically
                     _ballSpeed.Y *= -1;
 
-                    
-                    // Only destroy one brick per update
+                    // Only destroy one block per update
                     break;
                 }
             }
-            // Bottom of screen (optional: handle losing a life here)
+
+            // Bottom of screen - lose the game
             if (_ballRect.Bottom >= 600)
             {
                 IsLost = true;
