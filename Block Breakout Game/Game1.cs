@@ -262,26 +262,22 @@ namespace Block_Breakout_Game
                 //    }
                 //}
 
-                if (videoPlayer.State == MediaState.Playing)
-                {
-                    try
-                    {
-                        bgTexture = videoPlayer.GetTexture();
+                //if (videoPlayer.State == MediaState.Playing)
+                //{
+                //    try
+                //    {
+                //        bgTexture = videoPlayer.GetTexture();
 
-                        if (bgTexture != null)
-                        {
-                            _spriteBatch.Draw(
-                                bgTexture,
-                                new Rectangle(0, 0, window.Width, window.Height),
-                                Color.White
-                            );
-                        }
-                    }
-                    catch (InvalidOperationException)
-                    {
-                        // Video frame not available yet
-                    }
-                }
+                //        if (bgTexture != null)
+                //        {
+                //            _spriteBatch.Draw(bgTexture,new Rectangle(0, 0, window.Width, window.Height),Color.White);
+                //        }
+                //    }
+                //    catch (InvalidOperationException)
+                //    {
+                //        // Video frame not available yet
+                //    }
+                //}
 
                 // Draw game objects over the background
                 Paddle.Draw(_spriteBatch);
