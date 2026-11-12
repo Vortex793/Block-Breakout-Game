@@ -119,3 +119,9 @@
 /processorParam:Version=3.8.5.1
 /build:spaceVid.mp4
 
+#begin spaceVid.mp4
+/importer:H264Importer
+/processor:VideoProcessor
+/processorParam:Version=3.8.5.1
+/build:spaceVid.mp4
+
